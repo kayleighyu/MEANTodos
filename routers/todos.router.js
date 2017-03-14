@@ -2,17 +2,17 @@ var express = require('express');
 var todoRouter = express.Router();
 var Todo = require('../models/todos.model');
 
-var newTodo = new Todo({
-  completed: 'true',
-  description: 'First todo'
-});
-newTodo.save(function(err,data){
-  if (err){
-    console.log(err);
-  } else {
-    console.log(data);
-  }
-});
+// var newTodo = new Todo({
+//   completed: 'true',
+//   description: 'First todo'
+// });
+// newTodo.save(function(err,data){
+//   if (err){
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
 
 todoRouter.get('/todos', function(req, res){
   Todo.find({}, function(err, documents){
