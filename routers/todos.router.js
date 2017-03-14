@@ -13,7 +13,6 @@ var Todo = require('../models/todos.model');
 //     console.log(data);
 //   }
 // });
-
 todoRouter.get('/todos', function(req, res){
   Todo.find({}, function(err, documents){
     if(err){
@@ -58,7 +57,7 @@ todoRouter.post('/todos', function(req, res){
 });
 
 todoRouter.put('/todos/:id', function(req, res){
-  Todo.findOneAndUpdate({_id: req.params.id}, req.body, function(){
+  Todo.findOneAndUpdate({_id: req.params.id}, req.body, function(err, documents){
     if(err){
       res.status(500).json({
         msg: err
@@ -71,7 +70,7 @@ todoRouter.put('/todos/:id', function(req, res){
   });
 });
 
-todoRouter.delete('/todos/:id', function(){
+todoRouter.delete('/todos/:id', function(req, res){
   Todo.remove({_id: req.params.id}, function(err, documents){
     if(err){
       res.status(500).json({
