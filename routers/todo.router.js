@@ -1,13 +1,23 @@
 var express = require('express');
-var router = express.Router();
-var Todo = require('../models/todo.model');
+var todoRouter = express.Router();
+var Todo = require('../models/todos.model');
 
-
-router.get('/todos', function(req, res){
+// var newTodo = new Todo({
+//   completed: 'true',
+//   description: 'First todo'
+// });
+// newTodo.save(function(err,data){
+//   if (err){
+//     console.log(err);
+//   } else {
+//     console.log(data);
+//   }
+// });
+todoRouter.get('/todos', function(req, res){
   Todo.find({}, function(err, documents){
     if(err){
       res.status(500).json({
-        msg: err
+        msg:err
       });
     } else {
       res.status(200).json({
@@ -16,7 +26,8 @@ router.get('/todos', function(req, res){
     }
   });
 });
-router.get('/todos/:id', function(req, res){
+
+todoRouter.get('/todos/:id', function(req, res){
   Todo.find({_id: req.params.id}, function(err, documents){
     if(err){
       res.status(500).json({
@@ -29,22 +40,24 @@ router.get('/todos/:id', function(req, res){
     }
   });
 });
-router.post('/todos', function(req, res){
+
+todoRouter.post('/todos', function(req, res){
   var todo = new Todo(req.body);
-  todo.save(function(err){
-    if(err){
+  todo.save(function(err, documents){
+    if (err){
       res.status(500).json({
         msg: err
       });
     } else {
       res.status(201).json({
-        msg: 'Successfully created a new todo'
+        msg: 'Success'
       });
     }
   });
 });
-router.put('/todos/:id', function(req, res){
-  Todo.findAndUpdate({_id: req.params.id}, req.body, function(err, document){
+
+todoRouter.put('/todos/:id', function(req, res){
+  Todo.findOneAndUpdate({_id: req.params.id}, req.body, function(err, documents){
     if(err){
       res.status(500).json({
         msg: err
@@ -52,12 +65,13 @@ router.put('/todos/:id', function(req, res){
     } else {
       res.status(200).json({
         msg: 'Successfully updated'
-      })
+      });
     }
   });
 });
-router.delete('/todos/:id', function(req, res){
-  Todo.remove({_id: req.params.id}, function(err){
+
+todoRouter.delete('/todos/:id', function(req, res){
+  Todo.remove({_id: req.params.id}, function(err, documents){
     if(err){
       res.status(500).json({
         msg: err
@@ -69,5 +83,4 @@ router.delete('/todos/:id', function(req, res){
     }
   });
 });
-
-module.exports = router;
+module.exports = todoRouter;
