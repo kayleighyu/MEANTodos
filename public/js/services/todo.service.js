@@ -11,8 +11,13 @@
           return $http.get(baseURL);
         }
 
+        function create(todo){
+          return $http.post(baseURL, todo);
+        }
+
         return {
-          'getAll': getAll
+          getAll: getAll,
+          create: create
         };
       }
 })()
