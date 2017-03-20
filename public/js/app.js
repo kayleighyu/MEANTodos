@@ -1,4 +1,3 @@
 (function(){
-  angular.module('MEANTodos', []);//setter syntax
-
+  angular.module('MEANTodos', []); //setter syntax
 })() //immediately invoked functional expression

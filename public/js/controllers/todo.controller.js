@@ -1,56 +1,53 @@
 (function(){
-    angular.module('MEANTodos') //getter syntax
-        .controller('TodoController', TodoController);
+  angular.module('MEANTodos') //getter syntax
+    .controller('TodoController', TodoController);
 
-          TodoController.$inject = ['$scope', 'TodoService'];
+    TodoController.$inject = ['$scope', 'TodoService'];
 
-          function TodoController($scope, TodoService){
-            $scope.todos = [];
-            $scope.newTodo = {};
-            $scope.addTodo = addTodo;
-            $scope.deleteTodo = deleteTodo;
-            $scope.update = update;
-            $scope.edit = edit;
-            getTodos();
-            function deleteTodo(todo){
-              TodoService.delete(todo)
-                          .then(function(response){
-                            //console.log(response);
-                            getTodos();
-                          });
-            }
+    function TodoController($scope, TodoService){
+      $scope.todos = [];
+      $scope.newTodo = {};
+      $scope.addTodo = addTodo;
+      $scope.deleteTodo = deleteTodo;
+      $scope.update = update;
+      $scope.edit = edit;
 
-            function edit(todo){
-              console.log('editing...');
-              todo.edit = true;
-            }
+      getTodos();
 
-            function update(todo){
-              console.log('updating...');
-              todo.edit = false;
-              TodoService.update(todo)
-                        .then(function(response){
-                          getTodos();
-                        });
-            }
+      $scope.$watch(function watcher(){
+        return TodoService.fetch();
+      },
+      function onChange(){
+        $scope.todos = TodoService.fetch();
+      });
 
-            function addTodo(newTodo){
-              console.log('Creating a new todo...');
-              TodoService.create(newTodo)
-                        .then(function(response){
-                          //console.log(response);
-                          getTodos();
-                          $scope.newTodo = {};
-                        });
-            }
+      function edit(todo){
+        console.log('editing...');
+        todo.edit = true;
+      }
 
-            function getTodos(){
-              console.log($scope.todos);
-              console.log('Getting the todos...');
-              TodoService.getAll()
-                        .then(function(response){
-                          $scope.todos = response.data.todos;
-                        });
-            }
-        }
+      function update(todo){
+        console.log('updating...');
+        todo.edit = false;
+        TodoService.update(todo);
+      }
+
+      function deleteTodo(todo){
+        TodoService.delete(todo);
+      }
+
+      function addTodo(newTodo){
+        console.log('Creating a new todo...');
+        TodoService.create(newTodo)
+                  .then(function(response){
+                    $scope.newTodo = {};
+                  });
+      }
+
+      function getTodos(){
+        console.log('Getting the todos...');
+        TodoService.getAll();
+      }
+
+    }
 })()
